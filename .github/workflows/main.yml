@@ -16,13 +16,4 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: |
-          git config --global user.email 390032295@qq.com
-          git config --global user.name donGitHubAction
-          echo $(date "+%Y-%m-%d %H:%M:%S") >> test.txt
-          git add .
-          git commit -m"action:`date`"
-          git pull --rebase
-      - name: Push changes
-        uses: BabyMemoryGallery@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          echo $(date "+%Y-%m-%d %H:%M:%S")
