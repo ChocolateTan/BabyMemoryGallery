@@ -1,17 +1,28 @@
-name: Python application
+name: BabyMemoryGalleryUpdatePhotoUrl
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         python-version:
         # - 'pypy-3.7' # the latest available version of PyPy that supports Python 3.7
         # - 'pypy-3.7-v7.3.3' # Python 3.7 and PyPy 7.3.3
-        - 'pypy-3.8' # the latest available version of PyPy that supports Python 3.8
+        # - 'pypy-3.8' # the latest available version of PyPy that supports Python 3.8
+        - 'pypy-3.9' # the latest available version of PyPy that supports Python 3.8
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python my_script.py
+      - run: |
+          git config --global user.email 390032295@qq.com
+          git config --global user.name donGitHubAction
+          echo $(date "+%Y-%m-%d %H:%M:%S") >> test.txt
+          git add .
+          git commit -m"action:`date`"
+          git pull --rebase
+      - name: Push changes
+        uses: BabyMemoryGallery@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
