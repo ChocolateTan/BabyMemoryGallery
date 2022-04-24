@@ -9,9 +9,9 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 3.9
 
@@ -19,17 +19,3 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests
-
-      - name: Test
-        run: |
-          git config --global user.email 390032295@qq.com
-          git config --global user.name donGitHubAction
-          echo $(date "+%Y-%m-%d %H:%M:%S") >> test.txt
-          git add .
-          git commit -m"action:`date`"
-          git pull --rebase
-
-      - name: Push changes
-        uses: BabyMemoryGallery@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
