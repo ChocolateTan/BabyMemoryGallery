@@ -31,5 +31,5 @@ jobs:
 
     - name: Push changes
       uses: BabyMemoryGallery@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
