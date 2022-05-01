@@ -19,7 +19,7 @@ jobs:
         run: |
           git config --global user.email 390032295@qq.com
           git config --global user.name donGitHubAction
-          echo python3 main.py ${{ secrets.BAIDU_ACCESS_TOKEN_JSON}} > test.txt
+          python3 main.py ${{ secrets.BAIDU_ACCESS_TOKEN_JSON}}
           git add .
           git commit -m"action:`date`"
           git pull --rebase

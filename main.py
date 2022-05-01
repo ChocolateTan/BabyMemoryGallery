@@ -3,6 +3,7 @@ from tkinter.messagebox import NO
 from turtle import down
 import requests
 import sys
+import json
 
 def http_get(kw, url): 
 
@@ -134,5 +135,7 @@ if __name__ == "__main__":
             item['img_url'] = ''
         new_file_info_list.append(item)
 
-    # print(new_file_info_list)
-    sys.exit(new_file_info_list)
+    # print(json.dumps(new_file_info_list))
+    file = open('test.txt', 'w')
+    file.write(json.dumps(new_file_info_list))
+    file.close()
