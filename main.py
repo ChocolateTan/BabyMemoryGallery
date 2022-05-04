@@ -120,7 +120,8 @@ def download(access_token, url):
 if __name__ == "__main__":
     access_token = sys.argv[1]
 
-    file_list = multimediaListAll(access_token, '/Photo/BaiduApiTest')
+    # file_list = multimediaListAll(access_token, '/Photo/BaiduApiTest')
+    file_list = multimediaListAll(access_token, '/Photo/don手机相册')
     fs_id_list = []
     for item in file_list['list']:
         fs_id_list.append(item['fs_id'])
