@@ -1,8 +1,8 @@
 name: BabyMemoryGalleryUpdatePhotoUrl
-# on: [push]
-on:
-  schedule:
-    - cron: "0 */1 * * *"
+on: [push]
+# on:
+#   schedule:
+#     - cron: "0 */1 * * *"
 jobs:
   build:
     runs-on: macos-latest
@@ -20,6 +20,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Update File
         run: |
+          pip3 install -r requirements.txt
           git config --global user.email 390032295@qq.com
           git config --global user.name donGitHubAction
           python3 main.py ${{ secrets.BAIDU_ACCESS_TOKEN_JSON}}
