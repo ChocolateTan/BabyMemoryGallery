@@ -1,5 +1,8 @@
 name: BabyMemoryGalleryUpdatePhotoUrl
-on: [push]
+# on: [push]
+on:
+  schedule:
+    - cron: "0 */1 * * *"
 jobs:
   build:
     runs-on: macos-latest
