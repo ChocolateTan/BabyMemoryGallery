@@ -6,10 +6,10 @@ name: BabyMemoryGalleryUpdatePhotoUrl
 on:
   push:
     branches:
-      - master
-  # schedule:
-  #   # - cron: "0 */1 * * *"
-  #   - cron: "*/5 * * * *"
+      - main
+  schedule:
+    # - cron: "0 */1 * * *"
+    - cron: "*/5 * * * *"
 jobs:
   build:
     runs-on: macos-latest
