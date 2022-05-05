@@ -79,7 +79,7 @@ def multimediaListAll(access_token, path):
         'order': 'time',
         'desc': '1',
         'start': 0,
-        'limit': 10,
+        'limit': 100,
         'web': '1',
     }, url="https://pan.baidu.com/rest/2.0/xpan/multimedia?")
 
@@ -120,8 +120,7 @@ def download(access_token, url):
 if __name__ == "__main__":
     access_token = sys.argv[1]
 
-    # file_list = multimediaListAll(access_token, '/Photo/BaiduApiTest')
-    file_list = multimediaListAll(access_token, '/Photo/don手机相册')
+    file_list = multimediaListAll(access_token, '/Photo/BaiduApiTest')
     fs_id_list = []
     for item in file_list['list']:
         fs_id_list.append(item['fs_id'])
