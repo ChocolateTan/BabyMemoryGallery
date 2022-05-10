@@ -4,6 +4,8 @@ from turtle import down
 import requests
 import sys
 import json
+import os
+import zipfile
 
 def http_get(kw, url): 
 
@@ -94,17 +96,28 @@ def multimediaFilemetas(access_token, fsids):
         'needmedia': 1,
     }, url="https://pan.baidu.com/rest/2.0/xpan/multimedia?")
 
-def download(access_token, url):
-    url = url + '&' + access_token
+def download(filename, access_token, url):
+    url = url + '&access_token=' + access_token
     payload = {}
     files = {}
     headers = {
         'User-Agent': 'pan.baidu.com',
-        "Referer": "pan.baidu.com"
+        # "Referer": "pan.baidu.com"
     }
+    if 'livp' in filename:
+        file_name = './downloadsource/' + str(filename).replace('livp', 'zip')
+    else:
+        file_name = './source/' + str(filename)
+    print(url)
     response = requests.request("GET", url, headers=headers, data = payload, files = files)
-    print(response.text.encode('utf8'))
-    return response.json()
+    # print(response.text.encode('utf8'))
+
+    with open(file_name,'wb') as file:
+        file.write(response.content)
+        
+    return file_name
+    # print(response.text.encode('utf8'))
+    # return response.json()
 
 # def multimediaFilemetas(access_token, path):
 #     http_get(kw={
@@ -117,6 +130,17 @@ def download(access_token, url):
 #         'needmedia': 1,
 #     }, url="https://pan.baidu.com/rest/2.0/xpan/file?")
 
+def zip_file(filename):
+    file_list = []
+    zFile = zipfile.ZipFile(filename, "r")
+    #ZipFile.namelist(): 获取ZIP文档内所有文件的名称列表
+    for fileM in zFile.namelist(): 
+        if '.mov' in fileM:
+            zFile.extract(fileM, './source/')
+            file_list.append('./source/' + fileM)
+    zFile.close()
+    return file_list
+
 if __name__ == "__main__":
     access_token = sys.argv[1]
 
@@ -128,12 +152,20 @@ if __name__ == "__main__":
     file_info_list = multimediaFilemetas(access_token, fs_id_list)
     new_file_info_list = []
     for item in file_info_list['list']:
-        item['dlink'] = item['dlink'] + '&' + access_token
         if 'width' in item and 'height' in item and 'thumbs' in item:
             item['img_url'] = item['thumbs']['url3'] + '&size=' + 'c' + str(item['width']) + '_u' + str(item['height'])
         else:
             item['img_url'] = ''
+        
+        print(item['img_url'])
         new_file_info_list.append(item)
+        file_name = download(item['filename'], access_token, item['dlink'])
+        if '.zip' in file_name:
+            file_list = zip_file(file_name)
+        else:
+            file_list = [file_name]
+        
+        item['github_url'] = file_list
 
     # print(json.dumps(new_file_info_list))
     file = open('test.txt', 'w')
