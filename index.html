@@ -12,10 +12,6 @@
         img {
             /* width:100%; */
             height: 100%;
-            transition: opacity 0.4s;
-            -webkit-transition: opacity 0.4s;
-            /* Safari */
-            opacity: 1;
         }
 
         .divContent {
@@ -23,12 +19,16 @@
             height: 100%;
             align-content: center;
             text-align: center;
+            transition: opacity 0.4s;
+            -webkit-transition: opacity 0.4s;
+            /* Safari */
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <div class="divContent">
+    <div id="divContent" class="divContent">
         <img id="currentImg" />
         <!-- <video id="video"  width="640" height="480" muted controls autoplay="autoplay" preload="auto" >
             <source src="https://raw.githubusercontent.com/ChocolateTan/BabyMemoryGallery/main/source/2022-03-26 170252.mov" />
@@ -39,8 +39,8 @@
         // var imageList = ['./source/2021-11-01 001511.jpg', './source/2020-01-15 141206.gif']
         var imageList = []
         var currentIdx = 0;
+        var divContent = document.getElementById('divContent');
         var currentImg = document.getElementById('currentImg');
-        var timer = null;
 
         function loadImage() {
             var xmlhttp;
@@ -61,7 +61,10 @@
                             imageList.push(element.img_url);
                         }
                     });
-                    startLoop();
+                    if (imageList.length > 0) {
+                        currentImg.src = imageList[0];
+                        startLoop();
+                    }
                 }
             }
             xmlhttp.open("GET", "https://raw.githubusercontent.com/ChocolateTan/BabyMemoryGallery/main/test.txt", true);
@@ -69,23 +72,33 @@
         }
         
         function startLoop() {
-            if (null != timer) {
-                clearInterval(timer);
-            }
-            timer = setInterval(() => {
-                currentImg.style.opacity = 0;
-                setTimeout(() => {
-                    if (currentIdx == imageList.length - 1) {
-                        currentIdx = 0
-                    } else {
-                        currentIdx += 1;
-                    }
-                    currentImg.src = imageList[currentIdx];
-                    currentImg.style.opacity = 1;
+            fadeOut();
+        }
 
-                    console.log(imageList[currentIdx]);
-                }, 1000);
-            }, 4000);
+        function fadeOut() {
+            setTimeout(() => {
+                divContent.style.opacity = 0;
+                updateImage();
+            }, 6000);
+        }
+
+        function fadeIn() {
+            setTimeout(() => {
+                divContent.style.opacity = 1;
+                fadeOut();
+            }, 1000);
+        }
+
+        function updateImage() {
+            setTimeout(() => {
+                if (currentIdx == imageList.length - 1) {
+                        currentIdx = 0
+                } else {
+                    currentIdx += 1;
+                }
+                currentImg.src = imageList[currentIdx];
+                fadeIn();
+            }, 1000);
         }
 
         window.onload = function() {
