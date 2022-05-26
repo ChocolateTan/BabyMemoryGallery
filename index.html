@@ -1,0 +1,97 @@
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            /* width:100%; */
+            height: 100%;
+            transition: opacity 0.4s;
+            -webkit-transition: opacity 0.4s;
+            /* Safari */
+            opacity: 1;
+        }
+
+        .divContent {
+            width: 100%;
+            height: 100%;
+            align-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="divContent">
+        <img id="currentImg" />
+        <!-- <video id="video"  width="640" height="480" muted controls autoplay="autoplay" preload="auto" >
+            <source src="https://raw.githubusercontent.com/ChocolateTan/BabyMemoryGallery/main/source/2022-03-26 170252.mov" />
+            您的浏览器不支持 HTML5 video 标签。
+        </video> -->
+    </div>
+    <script>
+        // var imageList = ['./source/2021-11-01 001511.jpg', './source/2020-01-15 141206.gif']
+        var imageList = []
+        var currentIdx = 0;
+        var currentImg = document.getElementById('currentImg');
+        var timer = null;
+
+        function loadImage() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    // document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+                    imageList = []
+                    var json = JSON.parse(xmlhttp.responseText)
+                    json.forEach(element => {
+                        if ('' != element.img_url) {
+                            imageList.push(element.img_url);
+                        }
+                    });
+                    startLoop();
+                }
+            }
+            xmlhttp.open("GET", "https://raw.githubusercontent.com/ChocolateTan/BabyMemoryGallery/main/test.txt", true);
+            xmlhttp.send();
+        }
+        
+        function startLoop() {
+            if (null != timer) {
+                clearInterval(timer);
+            }
+            timer = setInterval(() => {
+                currentImg.style.opacity = 0;
+                setTimeout(() => {
+                    if (currentIdx == imageList.length - 1) {
+                        currentIdx = 0
+                    } else {
+                        currentIdx += 1;
+                    }
+                    currentImg.src = imageList[currentIdx];
+                    currentImg.style.opacity = 1;
+
+                    console.log(imageList[currentIdx]);
+                }, 1000);
+            }, 4000);
+        }
+
+        window.onload = function() {
+            loadImage();
+        }
+    </script>
+</body>
+
+</html>
