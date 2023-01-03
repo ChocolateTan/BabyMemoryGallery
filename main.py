@@ -1,6 +1,4 @@
 # -*- coding: UTF-8 -*-
-from tkinter.messagebox import NO
-from turtle import down
 import requests
 import sys
 import json
